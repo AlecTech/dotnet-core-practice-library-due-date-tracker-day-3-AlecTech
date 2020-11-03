@@ -12,15 +12,16 @@ namespace ASPWebMVCBookApp.Controllers
     {
         public IActionResult Index()
         {
+            //2nd modify return default action to redirect to the “List” action.
             Debug.WriteLine("ACTION - Index Action");
-            return View();
+            return RedirectToAction("List");
         }
         /*
          *  ❏	“BookController”(like our PersonController) Class which inherits from “Controller”:
             ❏	A public static “Books” property which is a list of “Book”(like List<People>) objects. (will be created in Models like person class)
             ❏	Action/View “Index”. (redirects to ListAction)(Like index to Management)
                 ●	Modify this default action to redirect to the “List” action.
-            ❏	Action/View “Create” (This will have a FORM, it will call Book method through the action then submitted)
+            ❏	Action/View “Create” (This will have a FORM, it will call Book method through the action when submitted)
                 ●	Will display the form to create an object. 
                 ●	Call the “CreateBook()” method with the supplied query string parameters.
                 ●	Handle any exceptions thrown by “CreateBook()”;
@@ -37,56 +38,78 @@ namespace ASPWebMVCBookApp.Controllers
                 ●	A button that will call “DeleteBookByID()”.
 
          */
-
-        public IActionResult Management()
+        /*
+        public IActionResult Create()
         {
-            //People.Add(new Person() { FirstName = "Test1", LastName = "Test2" });
-            //People.Add(new Person() { FirstName = "Oleg", LastName = "Eremeev" });
-            Debug.WriteLine("ACTION - Management Action");
+            //Books.Add(new Book() { ID = "Test1", Title = "Test2" });
+            //Books.Add(new Book() { ID = "Oleg", Title = "Eremeev" });
+            Debug.WriteLine("ACTION - Create Action");
             ViewBag.Books = Books;
             return View();
         }
-        public IActionResult Create(string firstName, string lastName)
+        */
+        //3rd modify this Create action: 
+        public IActionResult Create(int id, string author, string title, DateTime publicationDate, DateTime checkedOutDate)
         {
-            Debug.WriteLine("ACTION - Create Action");
+            if (Request.Query.Count > 0)
+            {
+                Debug.WriteLine("ACTION - Create Action");
 
-            CreateBook(firstName, lastName);
-            return RedirectToAction("Management");
+                if (id != 0 && author != null && title != null && publicationDate != null && checkedOutDate != null)
+                {
+
+                    CreateBook(id, author, title, publicationDate, checkedOutDate);
+                    //You have successfully checked out {title} until {DueDate}."
+                    Book newBook = CreateBook(id, title, author, publicationDate, checkedOutDate);
+
+                    ViewBag.Good = $"You have successfully checked out {newBook.Title} until {newBook.DueDate}.";
+
+                }
+                else
+                {
+                    throw new Exception("not every field is entered!");
+                }
+
+            }
+            return View();
         }
 
-        public IActionResult Delete(string firstName)
+        public Book CreateBook(int id, string author, string title, DateTime publicationDate, DateTime checkedOutDate)
+        {
+            Debug.WriteLine($"DATA - CreateBook({id}, {author}, {title}, {publicationDate}, {checkedOutDate})");
+
+            Book aBook = new Book(id, author, title, publicationDate, checkedOutDate);
+            Books.Add(aBook);
+            return aBook;
+        }
+        /*
+        public IActionResult Delete(int id)
         {
             Debug.WriteLine("ACTION - Delete Action");
 
-            DeleteBookByFirstName(firstName);
-            return RedirectToAction("Management");
+            DeleteBookByFirstName(id);
+            return RedirectToAction("");
         }
-
+        */
         //1st modify this line
-        public static List<Book> Books = new List<Book>();
+        public static List<Book> Books { get; set; } = new List<Book>();
         // These methods are for data management. The body of the methods 
         //will be replaced with EF code tomorrow, but for now, we're just using a static list.
-        public void CreateBook(string firstName, string lastName)
+    
+        /*
+        public void DeleteBookByFirstName(int id)
         {
-            Debug.WriteLine($"DATA - CreateBook({firstName}, {lastName})");
-            Books.Add(new Book()
-            {
-                FirstName = firstName.Trim(),
-                LastName = lastName.Trim()
-            });
+            Debug.WriteLine($"DATA - DeleteBookByFirstName({id})");
+            Books.Remove(GetBookByFirstName(id));
         }
-
-        public void DeleteBookByFirstName(string firstName)
+        */
+        /*
+        public Book GetBookByFirstName(int id)
         {
-            Debug.WriteLine($"DATA - DeleteBookByFirstName({firstName})");
-            Books.Remove(GetBookByFirstName(firstName));
-        }
-
-        public Book GetBookByFirstName(string firstName)
-        {
-            Debug.WriteLine($"DATA - GetBookByFirstName({firstName})");
+            Debug.WriteLine($"DATA - GetBookByFirstName({id})");
             // This assumes nobody's name is duplicated. If it is, it will return null.
-            return Books.Where(x => x.FirstName.Trim().ToUpper() == firstName.Trim().ToUpper()).SingleOrDefault();
+            return Books.Where(x => x.ID.Trim().ToUpper() == id.Trim().ToUpper()).SingleOrDefault();
         }
+        */
     }
 }

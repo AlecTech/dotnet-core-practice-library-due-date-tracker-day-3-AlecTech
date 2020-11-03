@@ -88,7 +88,7 @@ namespace ASPWebMVCBookApp.Models
 
          */
         //https://docs.microsoft.com/en-us/dotnet/api/system.datetime.adddays?view=netcore-3.1
-        public Book(int id, string title, string author, DateTime publicationDate, DateTime checkedOutDate)
+        public Book(int id,  string author, string title, DateTime publicationDate, DateTime checkedOutDate)
         {
             _id = id;
             _title = title;

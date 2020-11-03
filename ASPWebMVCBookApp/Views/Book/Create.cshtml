@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Create";
+    System.Diagnostics.Debug.WriteLine("VIEW - Rendering Management View\n-------------------------");
+}
+
+<h1>Create</h1>
+@{
+    if (ViewBag.Good != null)
+    {
+        <p class="alert-success">@(ViewBag.Good)</p>
+    }
+    else if (ViewBag.Error != null)
+    {
+        <p class="alert-danger">@(ViewBag.Error)</p>
+    }
+}
+
+<form action="/Book/Create" method="get">
+    <label for="id">ID:</label>
+    <input id="id" type="text" name="id" value="" />
+    <label for="title">Title:</label>
+    <input id="title" type="text" name="title" value="" />
+    <label for="author">Author:</label>
+    <input id="author" type="text" name="author" value="" />
+    <label for="publicationDate">Publication Date:</label>
+    <input id="publicationDate" type="text" name="publicationDate" value="" />
+    <label for="checkedOutDate">Checked Out Date:</label>
+    <input id="checkedOutDate" type="text" name="checkedOutDate" value="" />
+    <input type="submit" value="Submit" />
+</form>
