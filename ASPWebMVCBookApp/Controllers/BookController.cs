@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ASPWebMVCBookApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace ASPWebMVCBookApp.Controllers
 {
@@ -13,7 +14,7 @@ namespace ASPWebMVCBookApp.Controllers
         public IActionResult Index()
         {
             //2nd modify return default action to redirect to the “List” action.
-            Debug.WriteLine("ACTION - Index Action");
+            //Debug.WriteLine("ACTION - Index Action");
             return RedirectToAction("List");
         }
         /*
@@ -49,8 +50,25 @@ namespace ASPWebMVCBookApp.Controllers
         }
         */
         //3rd modify this Create action: 
-        public IActionResult Create(int id, string author, string title, DateTime publicationDate, DateTime checkedOutDate)
+        public IActionResult Create(string id, string title, string author, string publicationDate, string checkedOutDate)
         {
+            if (id != null && title != null && author != null && publicationDate != null && checkedOutDate != null)
+            {
+                try
+                {
+                    CreateBook(id, title, author, publicationDate, checkedOutDate);
+                    ViewBag.SuccessfulCreation = true;
+                    //You have successfully checked out {title} until {DueDate}."
+                    ViewBag.Status = $"Successfully added book ID {id}";
+                }
+                catch (Exception e)
+                {
+                    ViewBag.SuccessfulCreation = false;
+                    ViewBag.Status = $"An error occured. {e.Message}";
+                }
+            }
+            return View();
+            /*
             if (Request.Query.Count > 0)
             {
                 Debug.WriteLine("ACTION - Create Action");
@@ -60,7 +78,7 @@ namespace ASPWebMVCBookApp.Controllers
 
                     CreateBook(id, author, title, publicationDate, checkedOutDate);
                     //You have successfully checked out {title} until {DueDate}."
-                    Book newBook = CreateBook(id, author, title, publicationDate, checkedOutDate);
+                    Book newBook = CreateBook(id, title, author, publicationDate, checkedOutDate);
 
                     ViewBag.Good = $"You have successfully checked out {newBook.Title} until {newBook.DueDate}.";
 
@@ -69,46 +87,114 @@ namespace ASPWebMVCBookApp.Controllers
                 {
                     throw new Exception("not every field is entered!");
                 }
-
             }
             return View();
+            */
         }
 
-        public Book CreateBook(int id, string author, string title, DateTime publicationDate, DateTime checkedOutDate)
-        {
-            Debug.WriteLine($"DATA - CreateBook({id}, {author}, {title}, {publicationDate}, {checkedOutDate})");
 
-            Book aBook = new Book(id, author, title, publicationDate, checkedOutDate);
-            Books.Add(aBook);
-            return aBook;
-        }
         public IActionResult List()
         {
+            Debug.WriteLine("ACTION - List Action");
             ViewBag.Books = Books;
 
             return View();
         }
-        /*
-        public IActionResult Delete(int id)
+        public IActionResult Details(string id)
+        {
+            Debug.WriteLine("ACTION - Details Action");
+            //ViewBag.Books = Books;
+            try
+            {
+                ViewBag.Book = GetBookByID(id);
+            }
+            catch
+            {
+
+            }
+            return View();
+        }
+        public IActionResult Extend(string id)
+        {
+            Debug.WriteLine("ACTION - Extend Action");
+
+            ExtendDueDateByID(id);
+            return RedirectToAction("Details", new Dictionary<string, string>() { { "id", id } });
+        }
+        public IActionResult Return(string id)
+        {
+            Debug.WriteLine("ACTION - Return Action");
+
+            ReturnBookByID(id);
+            return RedirectToAction("Details", new Dictionary<string, string>() { { "id", id } });
+        }
+        public IActionResult Delete(string id)
         {
             Debug.WriteLine("ACTION - Delete Action");
 
-            DeleteBookByFirstName(id);
-            return RedirectToAction("");
+            DeleteBookByID(id);
+            return RedirectToAction("List");
         }
-        */
-        //1st modify this line
-        public static List<Book> Books { get; set; } = new List<Book>();
+       
+        //1st modify this empty constructor
+        public static List<Book> Books { get; set; } = new List<Book>()
+        //Dummy data just for test
+        {
+             new Book(1, "Test Book", "Test Author", new DateTime(1990, 01, 01), new DateTime(2020, 10, 28)),
+            new Book(2, "Another Book", "Test Author", new DateTime(1990, 03, 03), new DateTime(2020, 10, 20))
+        };
+
         // These methods are for data management. The body of the methods 
         //will be replaced with EF code tomorrow, but for now, we're just using a static list.
-    
-        /*
-        public void DeleteBookByFirstName(int id)
+
+        public void CreateBook(string id, string title, string author, string publicationDate, string checkedOutDate)
         {
-            Debug.WriteLine($"DATA - DeleteBookByFirstName({id})");
-            Books.Remove(GetBookByFirstName(id));
+            //5 parameters comming into this method and passed into List<Book> Books for storage
+            //Parsing is done for the API because when it recieves any numeric data it will try to parse it regardless, so we want to 
+            //do prasing ourself just to make sure it goes through as expected not as API decodes it on its own 
+            Debug.WriteLine($"DATA - CreateBook({id}, {title}, {author}, {publicationDate}, {checkedOutDate})");
+            int parsedID = int.Parse(id);
+             //parsedID used to be int.Parse(id)
+            if (!Books.Exists(x => x.ID == parsedID))
+            {
+                Books.Add(new Book(parsedID, title.Trim(), author.Trim(), DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate)));
+            }
+            else
+            {
+                throw new Exception("That Book ID already exists!");
+            }
+            //Book aBook = new Book(id, title, author,  publicationDate, checkedOutDate);
+            // Books.Add(aBook);
+            //return aBook;
         }
-        */
+
+
+        
+        public Book GetBookByID(string id)
+        {
+            Debug.WriteLine($"DATA - GetBookByID({id})");
+            return Books.Where(x => x.ID == int.Parse(id)).Single();
+            //Books.Remove(GetBookByFirstName(id));
+        }
+        public void ExtendDueDateByID(string id)
+        {
+            Debug.WriteLine($"DATA - ExtendDueDateByID({id})");
+            GetBookByID(id).DueDate = GetBookByID(id).DueDate.AddDays(14);
+            //Books.Remove(GetBookByFirstName(id));
+        }
+        public void ReturnBookByID(string id)
+        {
+            Debug.WriteLine($"DATA - ReturnBookByID({id})");
+            GetBookByID(id).ReturnedDate = DateTime.Today;
+            // Books.Remove(GetBookByFirstName(id));
+        } 
+        public void DeleteBookByID(string id)
+        {
+            Debug.WriteLine($"DATA - DeleteBookByID({id})");
+            Books.Remove(GetBookByID(id));
+            //Books.Remove(GetBookByFirstName(id));
+        }
+
         /*
         public Book GetBookByFirstName(int id)
         {

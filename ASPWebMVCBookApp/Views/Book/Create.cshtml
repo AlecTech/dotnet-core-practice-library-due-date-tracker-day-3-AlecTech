@@ -7,14 +7,15 @@
     System.Diagnostics.Debug.WriteLine("VIEW - Rendering Management View\n-------------------------");
 }
 
-<h1>Create</h1>
+<h1>Create a Book</h1>
 @{
-    if (ViewBag.Good != null)
+    if (ViewBag.SuccessfulCreation != null)
     {
-        <p class="alert-success">@(ViewBag.Good)</p>
+        <p class="alert @((ViewBag.SuccessfulCreation ? "alert-success" : "alert-danger"))">@(ViewBag.Status)</p>
     }
-   
+
 }
+
 
 <form action="/Book/Create" method="get">
     <label for="id">ID:</label>
