@@ -60,7 +60,7 @@ namespace ASPWebMVCBookApp.Controllers
 
                     CreateBook(id, author, title, publicationDate, checkedOutDate);
                     //You have successfully checked out {title} until {DueDate}."
-                    Book newBook = CreateBook(id, title, author, publicationDate, checkedOutDate);
+                    Book newBook = CreateBook(id, author, title, publicationDate, checkedOutDate);
 
                     ViewBag.Good = $"You have successfully checked out {newBook.Title} until {newBook.DueDate}.";
 
@@ -81,6 +81,12 @@ namespace ASPWebMVCBookApp.Controllers
             Book aBook = new Book(id, author, title, publicationDate, checkedOutDate);
             Books.Add(aBook);
             return aBook;
+        }
+        public IActionResult List()
+        {
+            ViewBag.Books = Books;
+
+            return View();
         }
         /*
         public IActionResult Delete(int id)
