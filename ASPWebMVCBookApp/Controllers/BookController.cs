@@ -17,28 +17,7 @@ namespace ASPWebMVCBookApp.Controllers
             //Debug.WriteLine("ACTION - Index Action");
             return RedirectToAction("List");
         }
-        /*
-         *  ❏	“BookController”(like our PersonController) Class which inherits from “Controller”:
-            ❏	A public static “Books” property which is a list of “Book”(like List<People>) objects. (will be created in Models like person class)
-            ❏	Action/View “Index”. (redirects to ListAction)(Like index to Management)
-                ●	Modify this default action to redirect to the “List” action.
-            ❏	Action/View “Create” (This will have a FORM, it will call Book method through the action when submitted)
-                ●	Will display the form to create an object. 
-                ●	Call the “CreateBook()” method with the supplied query string parameters.
-                ●	Handle any exceptions thrown by “CreateBook()”;
-                ●	Success Message: "You have successfully checked out {title} until {DueDate}."(conditional @if)
-                ●	Error Message: “Unable to check out book: {Exception.Message}.”
-            ❏	Action/View “List”
-                ●	Render a list of all books as links in the format “{Title} by {Author}” that will load the “Details” Action/View for that book when clicked. (List of Books as LINQ) Ancer Tag to Details view with get parameter in the URL. (ex: Linking bookController details. Link to Details Page add a question mark and specify ID is = to whatever number book was clicked. (Getter property)
-            ❏	Action/View “Details” (if no ID => say “no books selected”) otherwise display book that we selected. 
-                ●	If no query string parameter “id” was supplied, render “No book selected.”
-                ●	If an “id” query string parameter was supplied, use “GetBookByID()” and render:
-                ●	"You checked out {Title} on {CheckedOutDate}, and the due date is {DueDate}."
-                ●	A button that will call “ExtendDueDateForBookByID()”.
-                ●	A button that will call “ReturnBookByID()”.
-                ●	A button that will call “DeleteBookByID()”.
-
-         */
+  
         /*
         public IActionResult Create()
         {
@@ -52,6 +31,8 @@ namespace ASPWebMVCBookApp.Controllers
         //3rd modify this Create action: 
         public IActionResult Create(string id, string title, string author, string publicationDate, string checkedOutDate)
         {
+            
+
             if (id != null && title != null && author != null && publicationDate != null && checkedOutDate != null)
             {
                 try
@@ -140,8 +121,8 @@ namespace ASPWebMVCBookApp.Controllers
         public static List<Book> Books { get; set; } = new List<Book>()
         //Dummy data just for test
         {
-             new Book(1, "Test Book", "Test Author", new DateTime(1990, 01, 01), new DateTime(2020, 10, 28)),
-            new Book(2, "Another Book", "Test Author", new DateTime(1990, 03, 03), new DateTime(2020, 10, 20))
+             //new Book(1, "Test Book", "Test Author", new DateTime(1990, 01, 01), new DateTime(2020, 10, 28)),
+           // new Book(2, "Another Book", "Test Author", new DateTime(1990, 03, 03), new DateTime(2020, 10, 20))
         };
 
         // These methods are for data management. The body of the methods 
@@ -153,19 +134,21 @@ namespace ASPWebMVCBookApp.Controllers
             //Parsing is done for the API because when it recieves any numeric data it will try to parse it regardless, so we want to 
             //do prasing ourself just to make sure it goes through as expected not as API decodes it on its own 
             Debug.WriteLine($"DATA - CreateBook({id}, {title}, {author}, {publicationDate}, {checkedOutDate})");
+          
             int parsedID = int.Parse(id);
-             //parsedID used to be int.Parse(id)
-            if (!Books.Exists(x => x.ID == parsedID))
-            {
-                Books.Add(new Book(parsedID, title.Trim(), author.Trim(), DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate)));
-            }
-            else
-            {
-                throw new Exception("That Book ID already exists!");
-            }
-            //Book aBook = new Book(id, title, author,  publicationDate, checkedOutDate);
-            // Books.Add(aBook);
-            //return aBook;
+              //parsedID used to be int.Parse(id)
+             if (!Books.Exists(x => x.ID == parsedID))
+             {
+                   //Books.Add(new Book(parsedID, title.Trim(), author.Trim(), DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate)));
+             }
+             else
+             {
+                 throw new Exception("That Book ID already exists!");
+             }
+         
+            //Book newBook = new Book(id, title, author,  publicationDate, checkedOutDate);
+             //Books.Add(aBook);
+           // return newBook;
         }
 
 

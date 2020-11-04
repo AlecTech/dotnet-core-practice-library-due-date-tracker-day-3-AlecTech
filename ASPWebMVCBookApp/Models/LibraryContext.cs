@@ -9,6 +9,14 @@ namespace ASPWebMVCBookApp.Models
 {
     public class LibraryContext : DbContext
     {
+       // public LibraryContext()
+        //{
+       // }
+
+       // public LibraryContext(DbContextOptions<LibraryContext> options)
+       //     : base(options)
+       // {
+       // }
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<Book> Books { get; set; }
 
@@ -92,60 +100,60 @@ namespace ASPWebMVCBookApp.Models
                         ID = -1,
                         Title = "The Adventures of Tom Sawyer",
                         AuthorID = -1,
-                        CheckedOutDate = new DateTime(2020/01/01),
-                        PublicationDate = new DateTime (1876/01/01),
-                        DueDate = new DateTime(2020/01/01).AddDays(14),
-                        ReturnedDate = new DateTime (2020/01/15)
+                        CheckedOutDate = new DateTime(2019, 12, 25),
+                        PublicationDate = new DateTime (1876, 01, 01),
+                        DueDate = new DateTime(2020, 01, 01).AddDays(14),
+                        ReturnedDate = new DateTime (2020, 01, 15)
                     },
                     new Book()
                     {
                         ID = -2,
                         Title = "War and Peace",
                         AuthorID = -2,
-                        CheckedOutDate = new DateTime(2020 / 02 / 01),
-                        PublicationDate = new DateTime(1867 / 01 / 01),
-                        DueDate = new DateTime(2020 / 02 / 01).AddDays(14),
-                        ReturnedDate = new DateTime(2020 / 02 / 15)
+                        CheckedOutDate = new DateTime(2020, 02, 01),
+                        PublicationDate = new DateTime(1867, 01, 01),
+                        DueDate = new DateTime(2020, 02, 01).AddDays(14),
+                        ReturnedDate = null
                     },
                     new Book()
                     {
                         ID = -3,
                         Title = "Three Sisters",
                         AuthorID = -3,
-                        CheckedOutDate = new DateTime(2020 / 03 / 01),
-                        PublicationDate = new DateTime(1901 / 01 / 01),
-                        DueDate = new DateTime(2020 / 03 / 01).AddDays(14),
-                        ReturnedDate = new DateTime(2020 / 03 / 15)
+                        CheckedOutDate = new DateTime(2020, 03, 01),
+                        PublicationDate = new DateTime(1901, 01, 01),
+                        DueDate = new DateTime(2020, 03, 01).AddDays(14).AddDays(14),
+                        ReturnedDate = new DateTime(2020, 03, 29)
                     },
                     new Book()
                     {
                         ID = -4,
                         Title = "Count Zero",
                         AuthorID = -5,
-                        CheckedOutDate = new DateTime(2020 / 06 / 01),
-                        PublicationDate = new DateTime(1986 / 01 / 01),
-                        DueDate = new DateTime(2020 / 06 / 01).AddDays(14),
-                        ReturnedDate = new DateTime(2020 / 06 / 15)
+                        CheckedOutDate = new DateTime(2020, 06, 01),
+                        PublicationDate = new DateTime(1986, 01, 01),
+                        DueDate = new DateTime(2020, 06, 01).AddDays(14),
+                        ReturnedDate = new DateTime(2020, 06, 15)
                     },
                     new Book()
                     {
                         ID = -5,
                         Title = "Neuromancer",
                         AuthorID = -5,
-                        CheckedOutDate = new DateTime(2020 / 05 / 01),
-                        PublicationDate = new DateTime(1984 / 01 / 01),
-                        DueDate = new DateTime(2020 / 05 / 01).AddDays(14),
-                        ReturnedDate = new DateTime(2020 / 05 / 15)
+                        CheckedOutDate = new DateTime(2020, 05, 01),
+                        PublicationDate = new DateTime(1984, 01, 01),
+                        DueDate = new DateTime(2020, 05, 01).AddDays(14),
+                        ReturnedDate = new DateTime(2020, 05, 15)
                     },
                     new Book()
                     {
                         ID = -6,
                         Title = "Agency",
                         AuthorID = -5,
-                        CheckedOutDate = new DateTime(2020 / 07 / 01),
-                        PublicationDate = new DateTime(2020 / 01 / 01),
-                        DueDate = new DateTime(2020 / 07 / 01).AddDays(14),
-                        ReturnedDate = new DateTime(2020 / 07 / 15)
+                        CheckedOutDate = new DateTime(2020, 07, 01),
+                        PublicationDate = new DateTime(2020, 01, 01),
+                        DueDate = new DateTime(2020, 07, 01).AddDays(14),
+                        ReturnedDate = new DateTime(2020, 07, 15)
                     }
                   );
                     

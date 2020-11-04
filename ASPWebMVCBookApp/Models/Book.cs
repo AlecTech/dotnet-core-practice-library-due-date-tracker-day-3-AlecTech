@@ -2,14 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ASPWebMVCBookApp.Models
 {
+    [Table("book")]
     public class Book
     {
+        /*
+        public Book()
+        {
+            Books = new HashSet<Book>();
+        }
+        */
+        [Key]
+        [Column("ID", TypeName = "int(10)")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [Column("Title", TypeName = "varchar(30)")]
+        public string Title { get; set; }
+
+        [Column("PublicationDate", TypeName = "date")]
+        public DateTime PublicationDate { get; set; }
+
+        [Column("CheckedOutDate", TypeName = "date")]
+        public DateTime CheckedOutDate { get; set; }
+
+        [Column("DueDate", TypeName = "date")]
+        public DateTime DueDate { get; set; }
+
+        [Column("ReturnedDate", TypeName = "date")]
+        public DateTime? ReturnedDate { get; set; }
+
+        [Column("AuthorID", TypeName = "int(10)")]
+        public int AuthorID { get; set; }
+
+        // This attribute specifies which database field is the foreign key. Typically in the child (many side of the 1-many).
+        [ForeignKey(nameof(AuthorID))]
+
+        // InverseProperty links the two virtual properties together.
+        [InverseProperty(nameof(Models.Author.Books))]
+        public virtual Author Author { get; set; }
+        /*
         //id Title Author and PublicationDate have only getters not Setters allowed, because we can not change them
 
         //intelesence suggested to add those private initializers, i suppose because they are inside the scope and private access modifier is not visible
@@ -84,5 +123,7 @@ namespace ASPWebMVCBookApp.Models
             ReturnedDate = null;
 
         }
+        */
+
     }
 }
