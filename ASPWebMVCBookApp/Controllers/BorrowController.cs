@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using ASPWebMVCBookApp.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ASPWebMVCBookApp.Controllers
+{
+    public class BorrowController : Controller
+    {
+
+        private readonly LibraryContext _context;
+
+        public BorrowController(LibraryContext context)
+        {
+            _context = context;
+        }
+
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+      
+        public void ExtendDueDateForBorrowByID(int BookID)
+        {
+            _context.Borrows.FirstOrDefault<Borrow>(e => e.BookID == BookID).DueDate.AddDays(7);
+                
+        }
+        public void ReturnBorrowByID(int BookID)
+        {
+             _context.Borrows.FirstOrDefault<Borrow>(e => e.BookID == BookID).ReturnedDate = DateTime.Today;
+        }
+
+        public void CreateBorrow(int BookID)
+        {
+            _context.Borrows.Add(new Borrow { BookID = BookID, CheckedOutDate = DateTime.Today, DueDate = DateTime.Today.AddDays(14) });
+            _context.SaveChanges();
+        }
+
+    }
+}

@@ -21,8 +21,15 @@ namespace ASPWebMVCBookApp.Models
         public int ID { get; set; }
 
         [Required]
-        [Column("Name", TypeName = "varchar(30)")]
+        [Column("Name", TypeName = "varchar(60)")]
         public string Name { get; set; }
+
+        [Required]
+        [Column("BirthDate", TypeName = "date")]
+        public DateTime BirthDate { get; set; }
+
+        [Column("DeathDate", TypeName = "date")]
+        public DateTime DeathDate { get; set; }
 
         [InverseProperty(nameof(Models.Book.Author))]
         public virtual ICollection<Book> Books { get; set; }

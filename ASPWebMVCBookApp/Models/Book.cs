@@ -12,33 +12,35 @@ namespace ASPWebMVCBookApp.Models
     [Table("book")]
     public class Book
     {
-        /*
+
         public Book()
         {
-            Books = new HashSet<Book>();
+            Borrows = new HashSet<Borrow>();
         }
-        */
+
         [Key]
         [Column("ID", TypeName = "int(10)")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
         [Required]
-        [Column("Title", TypeName = "varchar(30)")]
+        [Column("Title", TypeName = "varchar(100)")]
         public string Title { get; set; }
 
+        [Required]
         [Column("PublicationDate", TypeName = "date")]
         public DateTime PublicationDate { get; set; }
 
-        [Column("CheckedOutDate", TypeName = "date")]
-        public DateTime CheckedOutDate { get; set; }
+        //[Column("CheckedOutDate", TypeName = "date")]
+        //public DateTime CheckedOutDate { get; set; }
 
-        [Column("DueDate", TypeName = "date")]
-        public DateTime DueDate { get; set; }
+        //[Column("DueDate", TypeName = "date")]
+        //public DateTime DueDate { get; set; }
 
-        [Column("ReturnedDate", TypeName = "date")]
-        public DateTime? ReturnedDate { get; set; }
+        //[Column("ReturnedDate", TypeName = "date")]
+        //public DateTime? ReturnedDate { get; set; }
 
+        [Required]
         [Column("AuthorID", TypeName = "int(10)")]
         public int AuthorID { get; set; }
 
@@ -48,6 +50,15 @@ namespace ASPWebMVCBookApp.Models
         // InverseProperty links the two virtual properties together.
         [InverseProperty(nameof(Models.Author.Books))]
         public virtual Author Author { get; set; }
+
+
+
+
+
+        [InverseProperty(nameof(Models.Borrow.Book))]
+        public virtual ICollection<Borrow> Borrows { get; set; }
+
+
         /*
         //id Title Author and PublicationDate have only getters not Setters allowed, because we can not change them
 

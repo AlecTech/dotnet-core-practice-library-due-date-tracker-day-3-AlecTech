@@ -148,5 +148,10 @@ namespace ASPWebMVCBookApp.Controllers
         {
             return _context.Authors.Any(e => e.ID == id);
         }
+
+        public List<Author> GetAuthors()
+        {
+            return _context.Authors.ToList<Author>();   
+        }
     }
 }

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPWebMVCBookApp.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20201104032826_AddedAuthorControllerViaScaffolding")]
-    partial class AddedAuthorControllerViaScaffolding
+    [Migration("20201105002425_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,10 +26,20 @@ namespace ASPWebMVCBookApp.Migrations
                         .HasColumnName("ID")
                         .HasColumnType("int(10)");
 
+                    b.Property<DateTime>("BirthDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("BirthDate")
+                        .HasColumnType("date")
+                        .HasDefaultValue(new DateTime(1890, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+                    b.Property<DateTime>("DeathDate")
+                        .HasColumnName("DeathDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("varchar(60)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
@@ -41,26 +51,36 @@ namespace ASPWebMVCBookApp.Migrations
                         new
                         {
                             ID = -1,
+                            BirthDate = new DateTime(1900, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeathDate = new DateTime(1950, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Mark Twain"
                         },
                         new
                         {
                             ID = -2,
+                            BirthDate = new DateTime(1900, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeathDate = new DateTime(1955, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Leo Tolstoy"
                         },
                         new
                         {
                             ID = -3,
+                            BirthDate = new DateTime(1900, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeathDate = new DateTime(1970, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Anton Chekov"
                         },
                         new
                         {
                             ID = -4,
+                            BirthDate = new DateTime(1900, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeathDate = new DateTime(1977, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Jane Austen"
                         },
                         new
                         {
                             ID = -5,
+                            BirthDate = new DateTime(1900, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeathDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "William Gibson"
                         });
                 });
@@ -76,26 +96,14 @@ namespace ASPWebMVCBookApp.Migrations
                         .HasColumnName("AuthorID")
                         .HasColumnType("int(10)");
 
-                    b.Property<DateTime>("CheckedOutDate")
-                        .HasColumnName("CheckedOutDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnName("DueDate")
-                        .HasColumnType("date");
-
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnName("PublicationDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime?>("ReturnedDate")
-                        .HasColumnName("ReturnedDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnName("Title")
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("varchar(100)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
@@ -111,18 +119,13 @@ namespace ASPWebMVCBookApp.Migrations
                         {
                             ID = -1,
                             AuthorID = -1,
-                            CheckedOutDate = new DateTime(2019, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2020, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PublicationDate = new DateTime(1876, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedDate = new DateTime(2020, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "The Adventures of Tom Sawyer"
                         },
                         new
                         {
                             ID = -2,
                             AuthorID = -2,
-                            CheckedOutDate = new DateTime(2020, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2020, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PublicationDate = new DateTime(1867, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "War and Peace"
                         },
@@ -130,40 +133,28 @@ namespace ASPWebMVCBookApp.Migrations
                         {
                             ID = -3,
                             AuthorID = -3,
-                            CheckedOutDate = new DateTime(2020, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2020, 3, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PublicationDate = new DateTime(1901, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedDate = new DateTime(2020, 3, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Three Sisters"
                         },
                         new
                         {
                             ID = -4,
                             AuthorID = -5,
-                            CheckedOutDate = new DateTime(2020, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2020, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PublicationDate = new DateTime(1986, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedDate = new DateTime(2020, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Count Zero"
                         },
                         new
                         {
                             ID = -5,
                             AuthorID = -5,
-                            CheckedOutDate = new DateTime(2020, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2020, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PublicationDate = new DateTime(1984, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedDate = new DateTime(2020, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Neuromancer"
                         },
                         new
                         {
                             ID = -6,
                             AuthorID = -5,
-                            CheckedOutDate = new DateTime(2020, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2020, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PublicationDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedDate = new DateTime(2020, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Agency"
                         });
                 });

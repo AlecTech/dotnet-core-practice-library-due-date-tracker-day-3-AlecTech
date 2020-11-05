@@ -152,7 +152,7 @@ namespace ASPWebMVCBookApp.Controllers
         }
 
 
-        
+
         public Book GetBookByID(string id)
         {
             Debug.WriteLine($"DATA - GetBookByID({id})");
@@ -162,13 +162,13 @@ namespace ASPWebMVCBookApp.Controllers
         public void ExtendDueDateByID(string id)
         {
             Debug.WriteLine($"DATA - ExtendDueDateByID({id})");
-            GetBookByID(id).DueDate = GetBookByID(id).DueDate.AddDays(14);
+            //GetBookByID(id).DueDate = GetBookByID(id).DueDate.AddDays(14);
             //Books.Remove(GetBookByFirstName(id));
         }
         public void ReturnBookByID(string id)
         {
             Debug.WriteLine($"DATA - ReturnBookByID({id})");
-            GetBookByID(id).ReturnedDate = DateTime.Today;
+            //GetBookByID(id).ReturnedDate = DateTime.Today;
             // Books.Remove(GetBookByFirstName(id));
         } 
         public void DeleteBookByID(string id)
