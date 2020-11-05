@@ -29,7 +29,7 @@ namespace ASPWebMVCBookApp.Models
                     "server=localhost;" +
                     "port=3306;" +
                     "user=root;" +
-                    "database=mvc_library;";
+                    "database=oleg_library2;";
 
                 string version = "10.4.14-MariaDB";
 

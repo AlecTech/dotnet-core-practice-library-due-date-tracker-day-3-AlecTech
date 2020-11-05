@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ASPWebMVCBookApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using SQLitePCL;
 
@@ -169,7 +170,7 @@ namespace ASPWebMVCBookApp.Controllers
         public Book GetBookByID(string id)
         {
             Debug.WriteLine($"DATA - GetBookByID({id})");
-            return _context.Books.ToList<Book>().Where(x => x.ID == int.Parse(id)).Single();
+            return _context.Books.Include(x => x.Author).Where(x => x.ID == int.Parse(id)).Single();
             //Books.Remove(GetBookByFirstName(id));
         }
         public void ExtendDueDateByID(string id)
