@@ -153,5 +153,10 @@ namespace ASPWebMVCBookApp.Controllers
         {
             return _context.Authors.ToList<Author>();   
         }
+
+        public Author GetAuthorByName(string name )
+        {
+            return _context.Authors.FirstOrDefault(e => e.Name == name);
+        }
     }
 }
