@@ -10,7 +10,10 @@ namespace ASPWebMVCBookApp.Models
     [Table("borrow")]
     public class Borrow
     {
-      
+        //public Borrow()
+        //{
+        //    Books = new HashSet<Book>();
+        //}
 
         [Key]
         [Column("ID", TypeName = "int(10)")]

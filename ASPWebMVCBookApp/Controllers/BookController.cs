@@ -90,6 +90,7 @@ namespace ASPWebMVCBookApp.Controllers
             Debug.WriteLine("ACTION - List Action");
             ViewBag.Books = _context.Books.ToList<Book>();
             ViewBag.Authors = _context.Authors.ToList<Author>();
+            ViewBag.Borrows = _context.Borrows.ToList<Borrow>();
             return View();
         }
         public IActionResult Details(string id)

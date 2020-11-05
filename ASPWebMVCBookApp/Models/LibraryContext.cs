@@ -29,7 +29,7 @@ namespace ASPWebMVCBookApp.Models
                     "server=localhost;" +
                     "port=3306;" +
                     "user=root;" +
-                    "database=oleg_library2;";
+                    "database=mvc_library;";
 
                 string version = "10.4.14-MariaDB";
 
@@ -193,9 +193,9 @@ namespace ASPWebMVCBookApp.Models
                     {
                         ID = -1,
                         BookID = -2,
-                        CheckedOutDate = new DateTime(2020, 02, 01),
-                        DueDate = new DateTime(2020, 01, 01).AddDays(14),
-                        ReturnedDate = new DateTime (2020, 01, 15)
+                        CheckedOutDate = new DateTime(2019, 02, 01),
+                        DueDate = new DateTime(2019, 01, 01).AddDays(14),
+                        ReturnedDate = new DateTime (2019, 01, 15)
                     },
                     new Borrow()
                     {
