@@ -5,18 +5,16 @@
     ViewData["Title"] = "Details";
 }
 
-
-
 @if (ViewBag.Book != null)
 {
     <h1>Details - @(ViewBag.Book.ID)</h1>
     <p>Title: @(ViewBag.Book.Title)</p>
     <p>Author: @(ViewBag.Book.Author)</p>
     <p>Publication Date: @(ViewBag.Book.PublicationDate.ToLongDateString())</p>
-    <p>Checked Out Date: @(ViewBag.Book.CheckedOutDate.ToLongDateString())</p>
-    <p>Due Date: @(ViewBag.Book.DueDate.ToLongDateString())</p>
+    @*<p>Checked Out Date: @(ViewBag.Book.CheckedOutDate.ToLongDateString())</p>*@
+    @*<p>Due Date: @(ViewBag.Book.DueDate.ToLongDateString())</p>*@
 
-    <p>Returned Date: @((ViewBag.Book.ReturnedDate == null ? "Taken" : ((DateTime)ViewBag.Book.ReturnedDate).ToLongDateString()))</p>
+    @*<p>Returned Date: @((ViewBag.Book.ReturnedDate == null ? "Taken" : ((DateTime)ViewBag.Book.ReturnedDate).ToLongDateString()))</p>*@
 
     <a class="btn btn-success" href="/Book/Return?id=@(ViewBag.Book.ID)">Return Book</a>
 

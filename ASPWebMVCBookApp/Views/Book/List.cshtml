@@ -19,8 +19,8 @@
                     <div><span>ID: </span>@(book.ID)<a href="/Book/Details?id=@(book.ID)">@(book.Title)</a> </div>
                     <div><span>Title: </span>@(book.Title)</div>
                     <div><span>Author: </span>@(book.Author)</div>
-                    <div><span>Publicatioon Date: </span>@(book.PublicationDate.ToLongDateString())</div>
-                   @* <div><span>Checked Out Date: </span>@(book.CheckedOutDate.ToLongDateString())</div>*@
+                    <div><span>Publication Date: </span>@(book.PublicationDate.ToLongDateString())</div>
+                    @* <div><span>Checked Out Date: </span>@(book.CheckedOutDate.ToLongDateString())</div>*@
                     @*<div><span>Due Date: </span>@(book.DueDate.ToLongDateString())</div>*@
                     @*<div><span>Status: </span>@(book.ReturnedDate == null ? "Taken" : ((DateTime)book.ReturnedDate).ToLongDateString())</div>*@
                 </div>
@@ -28,7 +28,27 @@
         </li>
     </ol>
 }
+else @if (ViewBag.Authors.Count > 0)
+{
+<ol>
+    <li>
+
+        @foreach (Author book in ViewBag.Authors)
+        {
+            <div>
+               
+                <div><span>Author: </span>@(book.Name)</div>
+            
+                @* <div><span>Checked Out Date: </span>@(book.CheckedOutDate.ToLongDateString())</div>*@
+                @*<div><span>Due Date: </span>@(book.DueDate.ToLongDateString())</div>*@
+                @*<div><span>Status: </span>@(book.ReturnedDate == null ? "Taken" : ((DateTime)book.ReturnedDate).ToLongDateString())</div>*@
+            </div>
+        }
+    </li>
+</ol>
+
+}
 else
 {
-    <p>No books have been checked out.</p>
+<p>No books have been checked out.</p>
 }

@@ -9,14 +9,14 @@ namespace ASPWebMVCBookApp.Models
 {
     public class LibraryContext : DbContext
     {
-       // public LibraryContext()
-        //{
-       // }
+        public LibraryContext()
+        {
+        }
 
-       // public LibraryContext(DbContextOptions<LibraryContext> options)
-       //     : base(options)
-       // {
-       // }
+        public LibraryContext(DbContextOptions<LibraryContext> options)
+            : base(options)
+        {
+        }
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Borrow> Borrows { get; set; }

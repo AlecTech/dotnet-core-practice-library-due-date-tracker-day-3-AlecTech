@@ -88,7 +88,7 @@ namespace ASPWebMVCBookApp.Controllers
 
             Debug.WriteLine("ACTION - List Action");
             ViewBag.Books = _context.Books.ToList<Book>();
-
+            ViewBag.Authors = _context.Authors.ToList<Author>();
             return View();
         }
         public IActionResult Details(string id)
@@ -98,6 +98,7 @@ namespace ASPWebMVCBookApp.Controllers
             try
             {
                 ViewBag.Book = GetBookByID(id);
+                ViewBag.Author = GetBookByID(id);
             }
             catch
             {
@@ -165,8 +166,6 @@ namespace ASPWebMVCBookApp.Controllers
           //return newBook;
         }
 
-
-
         public Book GetBookByID(string id)
         {
             Debug.WriteLine($"DATA - GetBookByID({id})");
@@ -176,12 +175,18 @@ namespace ASPWebMVCBookApp.Controllers
         public void ExtendDueDateByID(string id)
         {
             Debug.WriteLine($"DATA - ExtendDueDateByID({id})");
+            int BookID = Int32.Parse(id);
+            BorrowController.ExtendDueDateForBorrowByID(BookID);
             //GetBookByID(id).DueDate = GetBookByID(id).DueDate.AddDays(14);
             //Books.Remove(GetBookByFirstName(id));
         }
+
+
         public void ReturnBookByID(string id)
         {
             Debug.WriteLine($"DATA - ReturnBookByID({id})");
+            int BookID = Int32.Parse(id);
+            BorrowController.ReturnBorrowByID(BookID);
             //GetBookByID(id).ReturnedDate = DateTime.Today;
             // Books.Remove(GetBookByFirstName(id));
         } 
