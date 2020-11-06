@@ -13,6 +13,45 @@ namespace ASPWebMVCBookApp.Models
     public class Book
     {
 
+        public string GetCheckOutDate
+        {
+            get { 
+                var checkoutdate = "book has never been checkedout";
+                if(Borrows.LastOrDefault() !=null)
+                {
+                    checkoutdate = Borrows.LastOrDefault().CheckedOutDate.ToLongDateString();
+                }
+                return checkoutdate;
+            }
+        }
+        public string GetDueDate
+        {
+            get
+            {
+                var duedate = "book is not due yet";
+                if (Borrows.LastOrDefault() != null)
+                {
+                    duedate = Borrows.LastOrDefault().DueDate.ToLongDateString();
+                }
+                return duedate;
+            }
+        }
+        public string GetReturnedDate
+        {
+            get
+            {
+                var returneddate = "never borrowed";
+                if (Borrows.LastOrDefault() != null && Borrows.LastOrDefault().ReturnedDate.HasValue)
+                {
+                    returneddate = Borrows.LastOrDefault().ReturnedDate.Value.ToLongDateString();
+                }
+                else if(Borrows.LastOrDefault() != null )
+                {
+                    returneddate = "Still borrowed";
+                }
+                return returneddate;
+            }
+        }
         public Book()
         {
             Borrows = new HashSet<Borrow>();
@@ -31,14 +70,6 @@ namespace ASPWebMVCBookApp.Models
         [Column("PublicationDate", TypeName = "date")]
         public DateTime PublicationDate { get; set; }
 
-        //[Column("CheckedOutDate", TypeName = "date")]
-        //public DateTime CheckedOutDate { get; set; }
-
-        //[Column("DueDate", TypeName = "date")]
-        //public DateTime DueDate { get; set; }
-
-        //[Column("ReturnedDate", TypeName = "date")]
-        //public DateTime? ReturnedDate { get; set; }
 
         [Required]
         [Column("AuthorID", TypeName = "int(10)")]

@@ -39,18 +39,18 @@ namespace ASPWebMVCBookApp.Controllers
         }
         */
         //3rd modify this Create action: 
-        public IActionResult Create(string id, string title, string author, string publicationDate, string checkedOutDate)
+        public IActionResult Create( string title, string author, string publicationDate, string checkedOutDate)
         {
             
 
-            if (id != null && title != null && author != null && publicationDate != null && checkedOutDate != null)
+            if (title != null && author != null && publicationDate != null && checkedOutDate != null)
             {
                 try
                 {
                     CreateBook(title, author, publicationDate, checkedOutDate);
                     ViewBag.SuccessfulCreation = true;
                     //You have successfully checked out {title} until {DueDate}."
-                    ViewBag.Status = $"Successfully added book ID {id}";
+                    ViewBag.Status = $"Successfully added book {title}";
                 }
                 catch (Exception e)
                 {
@@ -82,7 +82,6 @@ namespace ASPWebMVCBookApp.Controllers
             return View();
             */
         }
-
 
         public IActionResult List()
         {
@@ -129,7 +128,15 @@ namespace ASPWebMVCBookApp.Controllers
             DeleteBookByID(id);
             return RedirectToAction("List");
         }
-       
+        public IActionResult BorrowBook(string id)
+        {
+            Debug.WriteLine("ACTION - Delete Action");
+
+            BorrowBookByID(id);
+            return RedirectToAction("Details", new Dictionary<string, string>() { { "id", id } });
+        }
+
+
         //1st modify this empty constructor
         //public static List<Book> Books { get; set; } = new List<Book>()
         ////Dummy data just for test
@@ -160,6 +167,9 @@ namespace ASPWebMVCBookApp.Controllers
            //  }
          
             Book newBook = new Book {Title = title, PublicationDate = DateTime.Parse(publicationDate)};
+            Borrow newBorrow = new Borrow { CheckedOutDate = DateTime.Parse(checkedOutDate), DueDate = DateTime.Parse(checkedOutDate).AddDays(7) };
+            //Join 2 tables data
+            newBook.Borrows.Add(newBorrow);
             newBook.Author = new AuthorController(_context).GetAuthorByName(author);
             _context.Books.Add(newBook);
             _context.SaveChanges();
@@ -167,39 +177,39 @@ namespace ASPWebMVCBookApp.Controllers
             //Books.Add(newBook);
           //return newBook;
         }
-
         public Book GetBookByID(string id)
         {
             Debug.WriteLine($"DATA - GetBookByID({id})");
-            return _context.Books.Include(x => x.Author).Where(x => x.ID == int.Parse(id)).Single();
+            return _context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.ID == int.Parse(id)).Single();
             //Books.Remove(GetBookByFirstName(id));
         }
         public void ExtendDueDateByID(string id)
         {
             Debug.WriteLine($"DATA - ExtendDueDateByID({id})");
             int BookID = Int32.Parse(id);
-            BorrowController.ExtendDueDateForBorrowByID(BookID);
+            new BorrowController(_context).ExtendDueDateForBorrowByID(BookID);
             //GetBookByID(id).DueDate = GetBookByID(id).DueDate.AddDays(14);
             //Books.Remove(GetBookByFirstName(id));
         }
-
-
         public void ReturnBookByID(string id)
         {
             Debug.WriteLine($"DATA - ReturnBookByID({id})");
             int BookID = Int32.Parse(id);
-            BorrowController.ReturnBorrowByID(BookID);
+            new BorrowController(_context).ReturnBorrowByID(BookID);
             //GetBookByID(id).ReturnedDate = DateTime.Today;
             // Books.Remove(GetBookByFirstName(id));
         } 
         public void DeleteBookByID(string id)
         {
             Debug.WriteLine($"DATA - DeleteBookByID({id})");
-            _context.Books.ToList<Book>().Remove(GetBookByID(id));
+            _context.Books.Remove(GetBookByID(id));
             _context.SaveChanges();
             //Books.Remove(GetBookByFirstName(id));
         }
-
+        public void BorrowBookByID(string id)
+        {
+            new BorrowController(_context).CreateBorrow(Int32.Parse(id));
+        }
         /*
         public Book GetBookByFirstName(int id)
         {

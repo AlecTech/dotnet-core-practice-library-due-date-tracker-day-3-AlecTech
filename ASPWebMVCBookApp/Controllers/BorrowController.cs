@@ -24,13 +24,13 @@ namespace ASPWebMVCBookApp.Controllers
             return View();
         }
       
-        public static void ExtendDueDateForBorrowByID(int BookID)
+        public void ExtendDueDateForBorrowByID(int BookID)
         {
             //_context.Borrows.FirstOrDefault<Borrow>(e => e.BookID == BookID).DueDate.AddDays(7);
 
             using (var context = new LibraryContext())
             {
-                Borrow borrow = context.Borrows.Where(x => x.ID == BookID).Single();
+                Borrow borrow = context.Borrows.ToList().LastOrDefault(x => x.BookID == BookID);
                 borrow.DueDate = borrow.DueDate.AddDays(7);
                 context.SaveChanges();
             }
@@ -48,19 +48,20 @@ namespace ASPWebMVCBookApp.Controllers
             //                    .ToList();
             //}
         }
-        public static void ReturnBorrowByID(int BookID)
+        public void ReturnBorrowByID(int BookID)
         {
             //_context.Borrows.FirstOrDefault<Borrow>(e => e.BookID == BookID).ReturnedDate = DateTime.Today;
             using (var context = new LibraryContext())
             {
-                Borrow borrow = context.Borrows.Where(x => x.ID == BookID).Single();
-                borrow.ReturnedDate = (DateTime)(borrow.ReturnedDate = DateTime.Today);
+                Borrow borrow = context.Borrows.ToList().LastOrDefault(x => x.BookID == BookID);
+                borrow.ReturnedDate = DateTime.Today;
                 context.SaveChanges();
             }
         }
 
         public void CreateBorrow(int BookID)
         {
+
             _context.Borrows.Add(new Borrow { BookID = BookID, CheckedOutDate = DateTime.Today, DueDate = DateTime.Today.AddDays(14) });
             _context.SaveChanges();
         }

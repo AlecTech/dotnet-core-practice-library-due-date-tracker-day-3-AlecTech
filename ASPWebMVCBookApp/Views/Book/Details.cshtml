@@ -11,16 +11,18 @@
     <p>Title: @(ViewBag.Book.Title)</p>
     <p>Author: @(ViewBag.Book.Author.Name)</p>
     <p>Publication Date: @(ViewBag.Book.PublicationDate.ToLongDateString())</p>
-    @*<p>Checked Out Date: @(ViewBag.Book.CheckedOutDate.ToLongDateString())</p>*@
-    @*<p>Due Date: @(ViewBag.Book.DueDate.ToLongDateString())</p>*@
+    <p>Checked Out Date: @(ViewBag.Book.GetCheckOutDate)</p>
+    <p>Due Date: @(ViewBag.Book.GetDueDate)</p>
 
-    @*<p>Returned Date: @((ViewBag.Book.ReturnedDate == null ? "Taken" : ((DateTime)ViewBag.Book.ReturnedDate).ToLongDateString()))</p>*@
+    <p>Returned Date: @(ViewBag.Book.GetReturnedDate)</p>
 
     <a class="btn btn-success" href="/Book/Return?id=@(ViewBag.Book.ID)">Return Book</a>
 
     <a class="btn btn-primary" href="/Book/Extend?id=@(ViewBag.Book.ID)">Extend Due Date</a>
 
     <a class="btn btn-danger" href="/Book/Delete?id=@(ViewBag.Book.ID)">Delete Book</a>
+
+    <a class="btn btn-warning" href="/Book/BorrowBook?id=@(ViewBag.Book.ID)">Borrow Book</a>
 
 }
 else
