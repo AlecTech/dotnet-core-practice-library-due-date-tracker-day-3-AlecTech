@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using ASPWebMVCBookApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,26 @@ namespace ASPWebMVCBookApp.Controllers
 {
     public class BookController : Controller
     {
-
+    
         private readonly LibraryContext _context;
 
         public BookController(LibraryContext context)
         {
             _context = context;
         }
+
+        //public string GetDueDate
+        //{
+        //    get
+        //    {
+        //        var duedate = "book is not due yet";
+        //        if (_context.Borrows.LastOrDefault() != null)
+        //        {
+        //            duedate = _context.Borrows.LastOrDefault().DueDate.ToLongDateString();
+        //        }
+        //        return duedate;
+        //    }
+        //}
 
         public IActionResult Index()
         {
@@ -83,13 +97,19 @@ namespace ASPWebMVCBookApp.Controllers
             */
         }
 
-        public IActionResult List()
+        public IActionResult List(string filter)
         {
-
-            Debug.WriteLine("ACTION - List Action");
-            ViewBag.Books = _context.Books.ToList<Book>();
-            ViewBag.Authors = _context.Authors.ToList<Author>();
-            ViewBag.Borrows = _context.Borrows.ToList<Borrow>();
+            //Debug.WriteLine("ACTION - List Action");
+            if (filter == "overdue")
+            {
+                ViewBag.Books = GetOverdueBooks();
+            }
+            else
+            {
+                ViewBag.Books = _context.Books.ToList<Book>();
+                ViewBag.Authors = _context.Authors.ToList<Author>();
+                ViewBag.Borrows = _context.Borrows.ToList<Borrow>();
+            }
             return View();
         }
         public IActionResult Details(string id)
@@ -181,7 +201,7 @@ namespace ASPWebMVCBookApp.Controllers
         {
             Debug.WriteLine($"DATA - GetBookByID({id})");
             return _context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.ID == int.Parse(id)).Single();
-            //Books.Remove(GetBookByFirstName(id));
+         
         }
         public void ExtendDueDateByID(string id)
         {
@@ -209,6 +229,29 @@ namespace ASPWebMVCBookApp.Controllers
         public void BorrowBookByID(string id)
         {
             new BorrowController(_context).CreateBorrow(Int32.Parse(id));
+        }
+
+        public List<Book> GetOverdueBooks()
+        {
+            //DateTime date1 = _context.Borrows.LastOrDefault(GetDueDate);
+            List<Book> results;
+            //DateTime date = DateTime.Parse(Borrow._context.GetDueDate);
+            DateTime date1 = new DateTime();
+            DateTime date2 = date1.Date;
+            string date_str = date2.ToString();
+            string date = DateTime.Now.ToString("yyyy/MM/dd");
+            var parsedDate = DateTime.Parse(date);
+
+            //var dueDate1 = DateTime.Parse(_context.Books.);
+            using (LibraryContext context = new LibraryContext())
+            {
+                //results = _context.Borrows.Where(x => DateTime.Parse(x.DueDate) < parsedDate).ToList();
+                //results = _context.Books.Include(x => x.Borrows).Where(x => DateTime.Parse(x.GetDueDate) < parsedDate).ToList(); //DateTime.Parse(x.GetDueDate)
+                //results = _context.Books.Include(x => x.GetDueDate).Where(x => DateTime.Parse(x.GetDueDate) < ).ToList(); //
+                //I got a help with This Subquery Logic from Aaron Barthel
+                 results = _context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.Borrows.Any(y => y.DueDate < parsedDate && y.ReturnedDate == null)).ToList();
+                return results;
+            }
         }
         /*
         public Book GetBookByFirstName(int id)
