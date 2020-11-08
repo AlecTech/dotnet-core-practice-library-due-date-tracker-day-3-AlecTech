@@ -10,8 +10,9 @@ namespace ASPWebMVCBookApp.Models
     [Table("author")]
     public class Author
     {
+        //default constructor 
         public Author()
-        {
+        {// HashSet no duplicates
             Books = new HashSet<Book>();
         }
 

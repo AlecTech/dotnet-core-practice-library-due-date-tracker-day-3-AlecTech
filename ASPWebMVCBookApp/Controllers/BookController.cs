@@ -142,7 +142,7 @@ namespace ASPWebMVCBookApp.Controllers
             try
             {
                 ViewBag.Book = GetBookByID(id);
-                ViewBag.Author = GetBookByID(id);
+                //ViewBag.Author = GetBookByID(id);
             }
             catch
             {
@@ -210,9 +210,9 @@ namespace ASPWebMVCBookApp.Controllers
 
             
             Book newBook = new Book {Title = title, PublicationDate = DateTime.Parse(publicationDate)};
-            Borrow newBorrow = new Borrow { CheckedOutDate = DateTime.Parse(checkedOutDate), DueDate = DateTime.Parse(checkedOutDate).AddDays(7) };
+            //Borrow newBorrow = new Borrow { CheckedOutDate = DateTime.Parse(checkedOutDate), DueDate = DateTime.Parse(checkedOutDate).AddDays(7) };
             //Join 2 tables data
-            newBook.Borrows.Add(newBorrow);
+            //newBook.Borrows.Add(newBorrow);
             newBook.Author = new AuthorController(_context).GetAuthorByName(author);
             _context.Books.Add(newBook);
             _context.SaveChanges();
@@ -258,7 +258,8 @@ namespace ASPWebMVCBookApp.Controllers
             List<Book> results;
             using (LibraryContext context = new LibraryContext())
             {
-                results = _context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.Borrows.Any(y => y.Book.Title != null)).ToList();
+                //results = _context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.Borrows.Any(y => y.Book.Title != null)).ToList();
+                results = _context.Books.Include(x => x.Author).Include(x => x.Borrows).ToList();
                 return results;
             }
         }
