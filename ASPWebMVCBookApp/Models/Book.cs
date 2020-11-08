@@ -12,7 +12,6 @@ namespace ASPWebMVCBookApp.Models
     [Table("book")]
     public class Book
     {
-
         public string GetCheckOutDate
         {
             get { 
@@ -70,7 +69,6 @@ namespace ASPWebMVCBookApp.Models
         [Column("PublicationDate", TypeName = "date")]
         public DateTime PublicationDate { get; set; }
 
-
         [Required]
         [Column("AuthorID", TypeName = "int(10)")]
         public int AuthorID { get; set; }
@@ -82,12 +80,8 @@ namespace ASPWebMVCBookApp.Models
         [InverseProperty(nameof(Models.Author.Books))]
         public virtual Author Author { get; set; }
 
-
-
-
         [InverseProperty(nameof(Models.Borrow.Book))]
         public virtual ICollection<Borrow> Borrows { get; set; }
-
 
         /*
         //id Title Author and PublicationDate have only getters not Setters allowed, because we can not change them

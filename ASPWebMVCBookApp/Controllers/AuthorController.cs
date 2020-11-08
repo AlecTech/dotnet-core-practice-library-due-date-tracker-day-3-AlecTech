@@ -18,7 +18,8 @@ namespace ASPWebMVCBookApp.Controllers
             _context = context;
         }
         //when you create constractor that takes arguments it hides default constructor which is empty thats what we recreate empty constructore 
-        public AuthorController() { }
+        // for dropdown menu:
+        //public AuthorController() { }
 
         // GET: Author
         public async Task<IActionResult> Index()
@@ -151,6 +152,7 @@ namespace ASPWebMVCBookApp.Controllers
             return _context.Authors.Any(e => e.ID == id);
         }
 
+        //for dropdown manue : public static List<Author> 
         public List<Author> GetAuthors()
         {
             return _context.Authors.ToList<Author>();   

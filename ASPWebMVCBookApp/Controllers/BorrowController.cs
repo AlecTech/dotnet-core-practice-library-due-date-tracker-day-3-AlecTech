@@ -34,19 +34,21 @@ namespace ASPWebMVCBookApp.Controllers
                 borrow.DueDate = borrow.DueDate.AddDays(7);
                 context.SaveChanges();
             }
-            //private static Borrow GetById(LibraryContext context, int id)
-            //{
-                
-            //}
+         //   
+                //private static Borrow GetById(LibraryContext context, int id)
+                //{
 
-            //using (var _context = new LibraryContext())
-            //{
-            //    return _context.Books
-            //                    .Include(x => x.Author)
-            //                    .Include(x => x.Borrows)
-            //                    .Where(x => x.Borrows.Any(y => y.DueDate < DateTime.Today))
-            //                    .ToList();
-            //}
+                //}
+
+                //using (var _context = new LibraryContext())
+                //{
+                //    return _context.Books
+                //                    .Include(x => x.Author)
+                //                    .Include(x => x.Borrows)
+                //                    .Where(x => x.Borrows.Any(y => y.DueDate < DateTime.Today))
+                //                    .ToList();
+                //}
+           // 
         }
         public void ReturnBorrowByID(int BookID)
         {
@@ -58,13 +60,11 @@ namespace ASPWebMVCBookApp.Controllers
                 context.SaveChanges();
             }
         }
-
         public void CreateBorrow(int BookID)
         {
 
             _context.Borrows.Add(new Borrow { BookID = BookID, CheckedOutDate = DateTime.Today, DueDate = DateTime.Today.AddDays(14) });
             _context.SaveChanges();
         }
-
     }
 }

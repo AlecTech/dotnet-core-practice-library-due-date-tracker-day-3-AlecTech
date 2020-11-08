@@ -12,7 +12,6 @@ namespace ASPWebMVCBookApp.Models
         public LibraryContext()
         {
         }
-
         public LibraryContext(DbContextOptions<LibraryContext> options)
             : base(options)
         {
@@ -20,7 +19,6 @@ namespace ASPWebMVCBookApp.Models
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Borrow> Borrows { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -30,13 +28,10 @@ namespace ASPWebMVCBookApp.Models
                     "port=3306;" +
                     "user=root;" +
                     "database=mvc_library;";
-
                 string version = "10.4.14-MariaDB";
-
                 optionsBuilder.UseMySql(connection, x => x.ServerVersion(version));
             }
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Author>(entity =>
@@ -44,7 +39,6 @@ namespace ASPWebMVCBookApp.Models
                 entity.Property(e => e.Name)
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
-
                 entity.Property(e => e.BirthDate).HasDefaultValue(new DateTime(1890,01,01));
                 
                 entity.HasData(
@@ -80,16 +74,13 @@ namespace ASPWebMVCBookApp.Models
                     {
                         ID = -5,
                         Name = "William Gibson",
-                        BirthDate = new DateTime(1900, 02, 01)
-                        
+                        BirthDate = new DateTime(1900, 02, 01)                     
                     }
-                );
-                
+                );               
             });
             modelBuilder.Entity<Book>(entity =>
             {
                 string keyName = "FK_" + nameof(Book) + "_" + nameof(Author);
-
                 // These SHOULD be set automatically. If you want to play around with it by removing these and verify this version of EF works that way, feel free. 
                 entity.Property(e => e.Title)
                 .HasCharSet("utf8mb4")
@@ -103,19 +94,15 @@ namespace ASPWebMVCBookApp.Models
                 .HasForeignKey(thisEntity => thisEntity.AuthorID)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName(keyName);
-
-                
+              
                 entity.HasData
                 (
                     new Book()
                     {
                         ID = -1,
                         Title = "The Adventures of Tom Sawyer",
-                        AuthorID = -1,
-                        //CheckedOutDate = new DateTime(2019, 12, 25),
-                        PublicationDate = new DateTime (1876, 01, 01)
-                        //DueDate = new DateTime(2020, 01, 01).AddDays(14),
-                        //ReturnedDate = new DateTime (2020, 01, 15)
+                        AuthorID = -1,                     
+                        PublicationDate = new DateTime (1876, 01, 01)                     
                     },
                     new Book()
                     {
@@ -167,16 +154,12 @@ namespace ASPWebMVCBookApp.Models
                        // DueDate = new DateTime(2020, 07, 01).AddDays(14),
                        // ReturnedDate = new DateTime(2020, 07, 15)
                     }
-                  );
-                    
+                  );                  
             });
-
             modelBuilder.Entity<Borrow>(entity =>
             {
                 string keyName = "FK_" + nameof(Borrow) + "_" + nameof(Book);
-
                 // These SHOULD be set automatically. If you want to play around with it by removing these and verify this version of EF works that way, feel free. 
-           
                 entity.HasIndex(e => e.BookID)
                 .HasName(keyName);
 
@@ -185,7 +168,6 @@ namespace ASPWebMVCBookApp.Models
                 .HasForeignKey(thisEntity => thisEntity.BookID)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName(keyName);
-
 
                 entity.HasData
                 (
@@ -238,11 +220,7 @@ namespace ASPWebMVCBookApp.Models
                         ReturnedDate = new DateTime(2020, 07, 15)
                     }
                   );
-
             });
-
-
-
         }
     }
 }

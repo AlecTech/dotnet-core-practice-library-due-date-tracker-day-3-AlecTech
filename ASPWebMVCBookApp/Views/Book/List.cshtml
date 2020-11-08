@@ -1,74 +1,68 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-
 @{
     ViewData["Title"] = "List";
 }
-
 <h1>List</h1>
-
 <form action="/Book/List" method="get">
     <lable for="filter"> Show Past Due Books</lable>
-    <input type="checkbox" id="filter" name="filter" value="overdue"/>
-    <input type="submit" value="Go!"/>
+    <input type="checkbox" id="filter" name="filter" value="overdue" />
+    <input type="submit" value="Go!" />
 </form>
-
 <form action="/Book/List" method="get">
     <lable for="filter"> Show All Books</lable>
     <input type="checkbox" id="filter" name="filter" value="allbooks" />
     <input type="submit" value="Go!" />
 </form>
-
 <form action="/Book/Details" method="get">
     <lable for="filter"> Find Book by ID</lable>
     <input type="text" id="filter" name="filter" value="enter ID" />
     <input type="submit" value="Go!" />
 </form>
 
+@if (ViewBag.Books.Count > 0)
+{
+
+    <ol>
+
+        @foreach (Book book in ViewBag.Books)
+        {
+            <li>
+                <div>
+                    <div><span>ID: </span>@(book.ID)<a href="/Book/Details?id=@(book.ID)">@(book.Title)</a> </div>
+                    <div><span>Title: </span>@(book.Title)</div>
+                    <div><span>Author: </span>@(book.Author.Name)</div>
+                    <div><span>Publication Date: </span>@(book.PublicationDate.ToLongDateString())</div>
+                    <div><span>Checked Out Date: </span>@(book.GetCheckOutDate)</div>
+                    <div><span>Due Date: </span>@(book.GetDueDate)</div>
+                    <div><span>Status: </span>@(book.GetReturnedDate)</div>
+                </div>
+            </li>
+        }
+    </ol>
+}
+else
+{
+    <p>No books have been checked out.</p>
+}
 @*<form action="/Book/List" method="get">
-    <div>
-        <label for="Name">Authors:</label>
-        <select id="Name" name="Name">
-            @foreach (Author name in ViewBag.Authors)
-            {
-                @if (author.ID.ToString() == ViewBag.ID)
+        <div>
+            <label for="Name">Authors:</label>
+            <select id="Name" name="Name">
+                @foreach (Author name in ViewBag.Authors)
                 {
-                    <option value="@(author.ID)" selected>@(author.Name)</option>
+                    @if (author.ID.ToString() == ViewBag.ID)
+                    {
+                        <option value="@(author.ID)" selected>@(author.Name)</option>
+                    }
+                    else
+                    {
+                        <option value="@(author.ID)">@(author.Name)</option>
+                    }
                 }
-                else
-                {
-                    <option value="@(author.ID)">@(author.Name)</option>
-                }
-            }
-        </select>
-    </div>
-   
-    <input type="submit" value="Go" />
-</form>*@
+            </select>
+        </div>
 
-    @if (ViewBag.Books.Count > 0 )
-    {
-
-        <ol>
-
-            @foreach (Book book in ViewBag.Books)
-            {
-                <li>
-                    <div>
-                        <div><span>ID: </span>@(book.ID)<a href="/Book/Details?id=@(book.ID)">@(book.Title)</a> </div>
-                        <div><span>Title: </span>@(book.Title)</div>
-                        <div><span>Author: </span>@(book.Author.Name)</div>
-                        <div><span>Publication Date: </span>@(book.PublicationDate.ToLongDateString())</div>
-                        <div><span>Checked Out Date: </span>@(book.GetCheckOutDate)</div>
-                        <div><span>Due Date: </span>@(book.GetDueDate)</div>
-                        <div><span>Status: </span>@(book.GetReturnedDate)</div>                      
-                    </div>
-                </li>
-            }
-        </ol>
-    }
-    else
-    {
-        <p>No books have been checked out.</p>
-    }
+        <input type="submit" value="Go" />
+    </form>*@

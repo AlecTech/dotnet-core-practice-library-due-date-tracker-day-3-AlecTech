@@ -115,9 +115,11 @@ namespace ASPWebMVCBookApp.Controllers
                 ViewBag.Books = _context.Books.ToList<Book>();
                 ViewBag.Authors = _context.Authors.ToList<Author>();
                 ViewBag.Borrows = _context.Borrows.ToList<Borrow>();
+                //for dropdown menue
+                //ViewBag.Authors = new AuthorController().GetAuthors();
             }
 
-            ViewBag.Authors = new AuthorController().GetAuthors();
+
             return View();
         }
         //public IActionResult Find(string id)
@@ -205,7 +207,8 @@ namespace ASPWebMVCBookApp.Controllers
            //  {
            //      throw new Exception("That Book ID already exists!");
            //  }
-         
+
+            
             Book newBook = new Book {Title = title, PublicationDate = DateTime.Parse(publicationDate)};
             Borrow newBorrow = new Borrow { CheckedOutDate = DateTime.Parse(checkedOutDate), DueDate = DateTime.Parse(checkedOutDate).AddDays(7) };
             //Join 2 tables data
@@ -259,7 +262,6 @@ namespace ASPWebMVCBookApp.Controllers
                 return results;
             }
         }
-
         public List<Book> GetOverdueBooks()
         {          
             List<Book> results;         
@@ -268,8 +270,7 @@ namespace ASPWebMVCBookApp.Controllers
             string date_str = date2.ToString();
             string date = DateTime.Now.ToString("yyyy/MM/dd");
             var parsedDate = DateTime.Parse(date);
-            //❏	mvc_library DB find all past due dates for books
-            //❏	
+            //❏	mvc_library DB find all past due dates for books	
             //❏	SELECT *
             //❏	FROM author
             //❏	INNER JOIN book ON author.ID = book.AuthorID
@@ -277,7 +278,6 @@ namespace ASPWebMVCBookApp.Controllers
             //❏	WHERE borrow.DueDate < NOW() AND borrow.ReturnedDate IS NULL;
             using (LibraryContext context = new LibraryContext())
             {
-                //results = _context.Borrows.Where(x => DateTime.Parse(x.DueDate) < parsedDate).ToList();
                 //results = _context.Books.Include(x => x.Borrows).Where(x => DateTime.Parse(x.GetDueDate) < parsedDate).ToList(); //DateTime.Parse(x.GetDueDate)
                 //results = _context.Books.Include(x => x.GetDueDate).Where(x => DateTime.Parse(x.GetDueDate) < ).ToList(); //
                 //I got a help with This Subquery Logic from Aaron Barthel

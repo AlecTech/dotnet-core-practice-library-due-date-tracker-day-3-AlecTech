@@ -32,6 +32,7 @@ namespace ASPWebMVCBookApp.Models
         public DateTime DeathDate { get; set; }
 
         [InverseProperty(nameof(Models.Book.Author))]
+        //ICollection is for looping through List<Objects> and allows to modify them(Add,Remove) . IEnumerables only allows to loop
         public virtual ICollection<Book> Books { get; set; }
     }
 }
