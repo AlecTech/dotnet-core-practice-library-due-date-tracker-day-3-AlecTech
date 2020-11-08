@@ -72,6 +72,8 @@ namespace ASPWebMVCBookApp.Controllers
                     ViewBag.Status = $"An error occured. {e.Message}";
                 }
             }
+
+
             return View();
             /*
             if (Request.Query.Count > 0)
@@ -104,14 +106,33 @@ namespace ASPWebMVCBookApp.Controllers
             {
                 ViewBag.Books = GetOverdueBooks();
             }
+            else if (filter == "allbooks")
+            {
+                ViewBag.Books = GetBooks();
+            }
             else
             {
                 ViewBag.Books = _context.Books.ToList<Book>();
                 ViewBag.Authors = _context.Authors.ToList<Author>();
                 ViewBag.Borrows = _context.Borrows.ToList<Borrow>();
             }
+
+            ViewBag.Authors = new AuthorController().GetAuthors();
             return View();
         }
+        //public IActionResult Find(string id)
+        //{
+        //    //Debug.WriteLine("ACTION - List Action");
+        //    if (filter == "overdue")
+        //    {
+        //        ViewBag.Books = GetOverdueBooks();
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Books = "No books with this ID";
+        //    }
+        //    return View();
+        //}
         public IActionResult Details(string id)
         {
             Debug.WriteLine("ACTION - Details Action");
@@ -155,7 +176,6 @@ namespace ASPWebMVCBookApp.Controllers
             BorrowBookByID(id);
             return RedirectToAction("Details", new Dictionary<string, string>() { { "id", id } });
         }
-
 
         //1st modify this empty constructor
         //public static List<Book> Books { get; set; } = new List<Book>()
@@ -230,19 +250,31 @@ namespace ASPWebMVCBookApp.Controllers
         {
             new BorrowController(_context).CreateBorrow(Int32.Parse(id));
         }
+        public List<Book> GetBooks()
+        {
+            List<Book> results;
+            using (LibraryContext context = new LibraryContext())
+            {
+                results = _context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.Borrows.Any(y => y.Book.Title != null)).ToList();
+                return results;
+            }
+        }
 
         public List<Book> GetOverdueBooks()
-        {
-            //DateTime date1 = _context.Borrows.LastOrDefault(GetDueDate);
-            List<Book> results;
-            //DateTime date = DateTime.Parse(Borrow._context.GetDueDate);
+        {          
+            List<Book> results;         
             DateTime date1 = new DateTime();
             DateTime date2 = date1.Date;
             string date_str = date2.ToString();
             string date = DateTime.Now.ToString("yyyy/MM/dd");
             var parsedDate = DateTime.Parse(date);
-
-            //var dueDate1 = DateTime.Parse(_context.Books.);
+            //❏	mvc_library DB find all past due dates for books
+            //❏	
+            //❏	SELECT *
+            //❏	FROM author
+            //❏	INNER JOIN book ON author.ID = book.AuthorID
+            //❏	INNER JOIN borrow ON book.ID = borrow.BookID
+            //❏	WHERE borrow.DueDate < NOW() AND borrow.ReturnedDate IS NULL;
             using (LibraryContext context = new LibraryContext())
             {
                 //results = _context.Borrows.Where(x => DateTime.Parse(x.DueDate) < parsedDate).ToList();

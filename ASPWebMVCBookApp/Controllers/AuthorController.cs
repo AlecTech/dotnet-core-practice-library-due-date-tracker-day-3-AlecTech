@@ -17,6 +17,8 @@ namespace ASPWebMVCBookApp.Controllers
         {
             _context = context;
         }
+        //when you create constractor that takes arguments it hides default constructor which is empty thats what we recreate empty constructore 
+        public AuthorController() { }
 
         // GET: Author
         public async Task<IActionResult> Index()
