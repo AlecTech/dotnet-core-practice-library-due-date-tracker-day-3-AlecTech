@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Schema;
-using ASPWebMVCBookApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using ASPWebMVCBookApp.Models;
+using ASPWebMVCBookApp.Models.Exceptions;
+//using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Xml.Schema;
 using Microsoft.VisualBasic;
 using SQLitePCL;
 
@@ -55,24 +58,43 @@ namespace ASPWebMVCBookApp.Controllers
         //3rd modify this Create action: 
         public IActionResult Create( string title, string author, string publicationDate, string checkedOutDate)
         {
-            
 
-            if (title != null && author != null && publicationDate != null && checkedOutDate != null)
+
+            //if (title != null && author != null && publicationDate != null && checkedOutDate != null)
+            //{
+            //    try
+            //    {
+            //        CreateBook(title, author, publicationDate, checkedOutDate);
+            //        ViewBag.SuccessfulCreation = true;
+            //        //You have successfully checked out {title} until {DueDate}."
+            //        ViewBag.Status = $"Successfully added book {title}";
+            //    }
+            //    catch (ValidationException e)
+            //    {
+            //        ViewBag.SuccessfulCreation = false;
+            //        ViewBag.Status = $"An error occured. {e.Message}";
+            //        ViewBag.Exception = e;
+            //    }
+            //}
+            if (Request.Query.Count > 0)
             {
                 try
                 {
                     CreateBook(title, author, publicationDate, checkedOutDate);
-                    ViewBag.SuccessfulCreation = true;
-                    //You have successfully checked out {title} until {DueDate}."
-                    ViewBag.Status = $"Successfully added book {title}";
+                    ViewBag.Message = $"Successfully Created Book {title}!";
                 }
-                catch (Exception e)
+                // Catch ONLY ValidationException. Any other Exceptions (FormatException, DivideByZeroException, etc) will not get caught, and will break the whole program.
+                catch (ValidationException e)
                 {
-                    ViewBag.SuccessfulCreation = false;
-                    ViewBag.Status = $"An error occured. {e.Message}";
+                    ViewBag.Title = title;
+                    ViewBag.Name = author;
+                    ViewBag.PublicationDate = publicationDate;
+                    ViewBag.CheckedOutDate = checkedOutDate;
+                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                    ViewBag.Exception = e;
+                    ViewBag.Error = true;
                 }
             }
-
 
             return View();
             /*
@@ -196,19 +218,101 @@ namespace ASPWebMVCBookApp.Controllers
             //Parsing is done for the API because when it recieves any numeric data it will try to parse it regardless, so we want to 
             //do prasing ourself just to make sure it goes through as expected not as API decodes it on its own 
             Debug.WriteLine($"DATA -  {title}, {author}, {publicationDate}, {checkedOutDate})");
-          
-            //int parsedID = int.Parse(id);
-              //parsedID used to be int.Parse(id)
+            
+            ValidationException exception = new ValidationException();
+
+           
+            //parsedID used to be int.Parse(id)
             // if (!_context.Books.ToList<Book>().Exists(x => x.ID == parsedID))
             // {
-                   //Books.Add(new Book(parsedID, title.Trim(), author.Trim(), DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate)));
-             //}
-           //  else
-           //  {
-           //      throw new Exception("That Book ID already exists!");
-           //  }
+            //Books.Add(new Book(parsedID, title.Trim(), author.Trim(), DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate)));
+            //}
+            //  else
+            //  {
+            //      throw new Exception("That Book ID already exists!");
+            //  }
 
-            
+           
+            using (var context = new LibraryContext())
+            {
+                //"Title" Field Validation
+                if (string.IsNullOrWhiteSpace(title))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Title Not Provided"));
+                }
+                else
+                {
+                    // Title is a duplicate.
+                    // Not a common validation point necessarily, but does perform (2).
+                    if (context.Books.Any(x => x.Title.ToUpper().Trim() == title.ToUpper().Trim()))
+                    {
+                        exception.ValidationExceptions.Add(new Exception("Title Already Exists"));
+                    }
+                    else
+                    {//actual size 100 but for test 30
+                        if (title.Length > 30)
+                        {
+                            // title too long
+                            // Common validation point (3).
+                            exception.ValidationExceptions.Add(new Exception("The Maximum Length of a Name is 30 Characters"));
+                        }
+                    }
+                }
+                //"Author" Field Validation
+                if (string.IsNullOrWhiteSpace(author))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Author name is Not Provided"));
+                }
+                else
+                {
+                    // Author does not exist check.
+                    // Not a common validation point necessarily, but does perform (2).
+                    if (!context.Authors.Any(x => x.Name.ToUpper().Trim().Equals(author.ToUpper().Trim())))
+                    {
+                        exception.ValidationExceptions.Add(new Exception("This Author doesn't Exists. First You need to add Author(s) in a Different Tab, then a book"));
+                    }
+                    else
+                    {//actual size 60 but for test 15
+                        if (author.Length > 15)
+                        {
+                            // author name too long
+                            // Common validation point (3).
+                            exception.ValidationExceptions.Add(new Exception("The Maximum Length of Author Name is 15 Characters"));
+                        }
+                    }
+                }
+                // bool parsedDate1 = DateTime.TryParse(publicationDate, out DateTime parsedDate1);
+                //if (string.IsNullOrWhiteSpace(categoryID))
+                //{
+                //    exception.ValidationExceptions.Add(new Exception("Category ID Not Provided"));
+                //}
+                //else
+                //{
+                //    // Category ID fails parse.
+                //    // Common validation points (5) and (5a).
+                //    if (!int.TryParse(categoryID, out parsedCategoryID))
+                //    {
+                //        exception.ValidationExceptions.Add(new Exception("Category ID Not Valid"));
+                //    }
+                //    else
+                //    {
+                //        // Category ID exists.
+                //        // Common validation point (7).
+                //        if (!context.Categories.Any(x => x.ID == parsedCategoryID))
+                //        {
+                //            exception.ValidationExceptions.Add(new Exception("Category Does Not Exist"));
+                //        }
+                //    }
+                //}
+
+
+            }
+
+            if (exception.ValidationExceptions.Count >0)
+            {
+                throw exception;
+            }
+
             Book newBook = new Book {Title = title, PublicationDate = DateTime.Parse(publicationDate)};
             //Borrow newBorrow = new Borrow { CheckedOutDate = DateTime.Parse(checkedOutDate), DueDate = DateTime.Parse(checkedOutDate).AddDays(7) };
             //Join 2 tables data

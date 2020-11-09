@@ -8,14 +8,27 @@
 }
 
 <h1>Create a Book</h1>
-@{
-    if (ViewBag.SuccessfulCreation != null)
+@*@{
+        if (ViewBag.SuccessfulCreation != null)
+        {
+            <p class="alert @((ViewBag.SuccessfulCreation ? "alert-success" : "alert-danger"))">@(ViewBag.Status)</p>
+        }
+
+    }*@
+
+@if (ViewBag.Message != null)
+{
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+    if (ViewBag.Error != null)
     {
-        <p class="alert @((ViewBag.SuccessfulCreation ? "alert-success" : "alert-danger"))">@(ViewBag.Status)</p>
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
     }
-
 }
-
 
 
 <form action="/Book/Create" method="get">
