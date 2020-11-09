@@ -5,6 +5,19 @@
     ViewData["Title"] = "List";
 }
 <h1>List</h1>
+@if (ViewBag.Message != null)
+{
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+    if (ViewBag.Error != null)
+    {
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
+    }
+}
 <form action="/Book/List" method="get">
     <lable for="filter"> Show Past Due Books</lable>
     <input type="checkbox" id="filter" name="filter" value="overdue" />

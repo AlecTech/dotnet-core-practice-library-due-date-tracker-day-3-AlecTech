@@ -377,8 +377,43 @@ namespace ASPWebMVCBookApp.Controllers
         public Book GetBookByID(string id)
         {
             Debug.WriteLine($"DATA - GetBookByID({id})");
+
+            ValidationException exception = new ValidationException();
+            using (var context = new LibraryContext())
+            {
+
+                //
+                int parsedID = 0;
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    exception.ValidationExceptions.Add(new Exception("ID Not Provided"));
+                }
+                else
+                {
+                    // Category ID fails parse.
+                    // Common validation points (5) and (5a).
+                    if (!int.TryParse(id, out parsedID))
+                    {
+                        exception.ValidationExceptions.Add(new Exception("ID Not Valid, please enter intiger"));
+                    }
+                    else
+                    {
+                        // Category ID exists.
+                        // Common validation point (7).
+                        if (!context.Books.Any(x => x.ID == parsedID))
+                        {
+                            exception.ValidationExceptions.Add(new Exception("ID Does Not Exist"));
+                        }
+                    }
+
+                }
+            }
+
+              if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
             return _context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.ID == int.Parse(id)).Single();
-         
         }
         public void ExtendDueDateByID(string id)
         {

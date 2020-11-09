@@ -25,8 +25,27 @@
     <a class="btn btn-warning" href="/Book/BorrowBook?id=@(ViewBag.Book.ID)">Borrow Book</a>
 
 }
-else
+@if (ViewBag.Message != null)
 {
-    <h1>Details</h1>
-    <p>An error occured trying to populate book data. <a href="/Book/List">Click here to return to the book list</a>.</p>
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+    if (ViewBag.Error != null)
+    {
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
+    }
+
 }
+
+
+
+
+@*else
+    {
+        <h1>Details</h1>
+        <p>An error occured trying to populate book data. <a href="/Book/List">Click here to return to the book list</a>.</p>
+
+    }*@
