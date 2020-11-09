@@ -35,6 +35,10 @@ namespace ASPWebMVCBookApp.Models
         [Column("BookID", TypeName = "int(10)")]
         public int BookID { get; set; }
 
+        [Required]
+        [Column("ExtensionCount", TypeName ="int(10)")]
+        public int ExtensionCount { get; set; }
+
         [ForeignKey(nameof(BookID))]
         // InverseProperty links the two virtual properties together.
         [InverseProperty(nameof(Models.Book.Borrows))]

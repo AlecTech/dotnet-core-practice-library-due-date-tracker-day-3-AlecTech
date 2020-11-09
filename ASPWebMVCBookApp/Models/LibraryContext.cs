@@ -177,7 +177,8 @@ namespace ASPWebMVCBookApp.Models
                         BookID = -2,
                         CheckedOutDate = new DateTime(2019, 02, 01),
                         DueDate = new DateTime(2019, 01, 01).AddDays(14),
-                        ReturnedDate = new DateTime (2019, 01, 15)
+                        ReturnedDate = new DateTime (2019, 01, 15),
+                        ExtensionCount = 1
                     },
                     new Borrow()
                     {
@@ -185,7 +186,8 @@ namespace ASPWebMVCBookApp.Models
                         BookID = -2,
                         CheckedOutDate = new DateTime(2020, 02, 01),
                         DueDate = new DateTime(2020, 02, 01).AddDays(14),
-                        ReturnedDate = null
+                        ReturnedDate = null,
+                        ExtensionCount = 3
                     },
                     new Borrow()
                     {
@@ -193,7 +195,8 @@ namespace ASPWebMVCBookApp.Models
                         BookID = -6,
                         CheckedOutDate = new DateTime(2020, 03, 01),
                         DueDate = new DateTime(2020, 03, 01).AddDays(14).AddDays(14),
-                        ReturnedDate = new DateTime(2020, 03, 29)
+                        ReturnedDate = new DateTime(2020, 03, 29),
+                        ExtensionCount = 0
                     },
                     new Borrow()
                     {
@@ -201,7 +204,8 @@ namespace ASPWebMVCBookApp.Models
                         BookID = -4,
                         CheckedOutDate = new DateTime(2020, 06, 01),
                         DueDate = new DateTime(2020, 06, 01).AddDays(14),
-                        ReturnedDate = new DateTime(2020, 06, 15)
+                        ReturnedDate = new DateTime(2020, 06, 15),
+                        ExtensionCount = 4
                     },
                     new Borrow()
                     {
@@ -209,7 +213,8 @@ namespace ASPWebMVCBookApp.Models
                         BookID = -1,
                         CheckedOutDate = new DateTime(2020, 05, 01),
                         DueDate = new DateTime(2020, 05, 01).AddDays(14),
-                        ReturnedDate = new DateTime(2020, 05, 15)
+                        ReturnedDate = new DateTime(2020, 05, 15),
+                        ExtensionCount = 2
                     },
                     new Borrow()
                     {
@@ -217,7 +222,8 @@ namespace ASPWebMVCBookApp.Models
                         BookID = -6,
                         CheckedOutDate = new DateTime(2020, 07, 01),
                         DueDate = new DateTime(2020, 07, 01).AddDays(14),
-                        ReturnedDate = new DateTime(2020, 07, 15)
+                        ReturnedDate = new DateTime(2020, 07, 15),
+                        ExtensionCount = 0
                     }
                   );
             });
