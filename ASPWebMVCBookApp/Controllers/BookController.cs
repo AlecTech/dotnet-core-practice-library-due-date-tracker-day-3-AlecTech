@@ -281,32 +281,82 @@ namespace ASPWebMVCBookApp.Controllers
                         }
                     }
                 }
-                // bool parsedDate1 = DateTime.TryParse(publicationDate, out DateTime parsedDate1);
-                //if (string.IsNullOrWhiteSpace(categoryID))
+                //"Publication Date" field Validation
+                DateTime parsedDate1;
+
+                //bool parsedDate1 = DateTime.TryParse(publicationDate, out DateTime parsedDate1);
+
+                if (string.IsNullOrWhiteSpace(publicationDate))
+                {
+                    exception.ValidationExceptions.Add(new Exception("PublicationDate Not Provided"));
+                }
+                else
+                {
+                    // Category ID fails parse.
+                  
+                    if (!DateTime.TryParse(publicationDate, out parsedDate1))
+                    {
+                        exception.ValidationExceptions.Add(new Exception("PublicationDate Not Valid"));
+                    }
+                    else
+                    {
+                        if (DateTime.Parse(checkedOutDate) < DateTime.Parse(publicationDate))
+                        {
+                            exception.ValidationExceptions.Add(new Exception("CheckedOutDate cannot be prior to PublicationDate"));
+                        }
+                        else
+                        {
+                            if (DateTime.Parse(publicationDate) > DateTime.Today)
+                            {
+                                exception.ValidationExceptions.Add(new Exception("PublishedDate cannot be in the future"));
+                            }
+                        }
+                    }
+                }
+                //"CheckedOutDate" field Validation
+                DateTime parsedDate2;
+
+                if (string.IsNullOrWhiteSpace(checkedOutDate))
+                {
+                    exception.ValidationExceptions.Add(new Exception("CheckedOutDate Not Provided"));
+                }
+                else
+                {
+                    if (!DateTime.TryParse(checkedOutDate, out parsedDate2))
+                    {
+                        exception.ValidationExceptions.Add(new Exception("CheckedOutDate Not Valid"));
+                    }
+                    else
+                    {
+                        if (DateTime.Parse(checkedOutDate) < DateTime.Parse(publicationDate))
+                        {
+                            exception.ValidationExceptions.Add(new Exception("CheckedOutDate cannot be prior to PublicationDate"));
+                        }
+                        else
+                        {
+                            if (DateTime.Parse(publicationDate) > DateTime.Today)
+                            {
+                                exception.ValidationExceptions.Add(new Exception("PublishedDate cannot be in the future"));
+                            }
+                        }
+                    }
+                }
+
+                //Checkout date < than Publication Date test and PublicationDate into the future test
+                //if (DateTime.Parse(checkedOutDate) < DateTime.Parse(publicationDate))
                 //{
-                //    exception.ValidationExceptions.Add(new Exception("Category ID Not Provided"));
+                //    exception.ValidationExceptions.Add(new Exception("CheckedOutDate cannot be prior to PublicationDate"));
                 //}
                 //else
                 //{
-                //    // Category ID fails parse.
-                //    // Common validation points (5) and (5a).
-                //    if (!int.TryParse(categoryID, out parsedCategoryID))
+                //    if (DateTime.Parse(publicationDate) > DateTime.Today)
                 //    {
-                //        exception.ValidationExceptions.Add(new Exception("Category ID Not Valid"));
-                //    }
-                //    else
-                //    {
-                //        // Category ID exists.
-                //        // Common validation point (7).
-                //        if (!context.Categories.Any(x => x.ID == parsedCategoryID))
-                //        {
-                //            exception.ValidationExceptions.Add(new Exception("Category Does Not Exist"));
-                //        }
+                //        exception.ValidationExceptions.Add(new Exception("PublishedDate cannot be in the future"));
                 //    }
                 //}
 
-
             }
+
 
             if (exception.ValidationExceptions.Count >0)
             {
