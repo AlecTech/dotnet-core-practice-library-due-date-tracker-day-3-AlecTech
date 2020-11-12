@@ -16,6 +16,8 @@
 
     <p>Returned Date: @(ViewBag.Book.GetReturnedDate)</p>
 
+    <p>Extentions: @(ViewBag.Book.GetExtensions)</p>
+
     <a class="btn btn-success" href="/Book/Return?id=@(ViewBag.Book.ID)">Return Book</a>
 
     <a class="btn btn-primary" href="/Book/Extend?id=@(ViewBag.Book.ID)">Extend Due Date</a>

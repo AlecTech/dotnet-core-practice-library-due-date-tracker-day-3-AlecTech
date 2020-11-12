@@ -51,6 +51,19 @@ namespace ASPWebMVCBookApp.Models
                 return returneddate;
             }
         }
+
+        public string GetExtensions
+        {
+            get
+            {
+                var extensions = "book has no extensions left";
+                if (Borrows.LastOrDefault() != null)
+                {
+                    extensions = Borrows.LastOrDefault().ExtensionCount.ToString();
+                }
+                return extensions;
+            }
+        }
         public Book()
         {
             Borrows = new HashSet<Borrow>();
